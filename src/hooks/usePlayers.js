@@ -10,7 +10,7 @@ function makePlayer(id) {
 let nextId = 4;
 
 export function usePlayers() {
-  const [players, setPlayers] = useState([makePlayer(1), makePlayer(2), makePlayer(3)]);
+  const [players, setPlayers] = useState([makePlayer(1), makePlayer(2)]);
 
   const addPlayer = useCallback(() => {
     setPlayers(prev => {
