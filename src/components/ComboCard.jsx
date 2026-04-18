@@ -1,8 +1,8 @@
 import { HeroAvatar } from './HeroAvatar';
 
 function WrBadge({ wr }) {
-  const color = wr >= 55 ? 'var(--green)' : wr <= 45 ? 'var(--red)' : 'var(--accent)';
-  const bg = wr >= 55 ? 'var(--green-dim)' : wr <= 45 ? 'var(--red-dim)' : 'var(--accent-dim)';
+  const color = wr >= 58 ? 'var(--green)' : wr >= 53 ? '#a8e84a' : wr >= 48 ? 'var(--accent)' : wr >= 42 ? '#e87a4a' : 'var(--red)';
+  const bg = wr >= 58 ? 'var(--green-dim)' : wr >= 53 ? 'rgba(168,232,74,0.12)' : wr >= 48 ? 'var(--accent-dim)' : wr >= 42 ? 'rgba(232,122,74,0.12)' : 'var(--red-dim)';
   return (
     <div style={{
       background: bg, border: `1px solid ${color}40`,
