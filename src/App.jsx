@@ -29,7 +29,7 @@ function Logo() {
 }
 
 export default function App() {
-  const [rank, setRank] = useState('');
+  const [rank, setRank] = useState({ min: '', max: '' });
   const {
     players, allHeroIds, totalHeroes, canAddPlayer,
     addPlayer, removePlayer, renamePlayer, addHero, removeHero, clearAll,
@@ -37,7 +37,7 @@ export default function App() {
   const synergy = useSynergy();
 
   function handleAnalyze() {
-    synergy.analyze(allHeroIds, rank);
+    synergy.analyze(allHeroIds, rank.min, rank.max);
   }
 
   function handleClear() {
@@ -85,8 +85,11 @@ export default function App() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
           <select
-            value={rank}
-            onChange={e => setRank(e.target.value)}
+            value={RANKS.find(r => r.min === rank.min)?.label ?? 'All Ranks'}
+            onChange={e => {
+              const found = RANKS.find(r => r.label === e.target.value);
+              setRank(found ? { min: found.min, max: found.max } : { min: '', max: '' });
+            }}
             style={{
               flex: '1 1 160px', background: 'var(--bg-1)',
               border: '1px solid var(--border)', borderRadius: 'var(--radius)',

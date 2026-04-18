@@ -37,19 +37,19 @@ export const HEROES = [
 export const HERO_BY_ID = Object.fromEntries(HEROES.map(h => [h.id, h]));
 
 export const RANKS = [
-  { label: 'All Ranks', value: '' },
-  { label: 'Obscurus',  value: '0' },
-  { label: 'Initiate',  value: '1' },
-  { label: 'Seeker',    value: '2' },
-  { label: 'Alchemist', value: '3' },
-  { label: 'Arcanist',  value: '4' },
-  { label: 'Ritualist', value: '5' },
-  { label: 'Emissary',  value: '6' },
-  { label: 'Archon',    value: '7' },
-  { label: 'Oracle',    value: '8' },
-  { label: 'Phantom',   value: '9' },
-  { label: 'Ascendant', value: '10' },
-  { label: 'Eternus',   value: '11' },
+  { label: 'All Ranks',  min: '',    max: ''    },
+  { label: 'Obscurus',   min: '0',   max: '9'   },
+  { label: 'Initiate',   min: '10',  max: '19'  },
+  { label: 'Seeker',     min: '20',  max: '29'  },
+  { label: 'Alchemist',  min: '30',  max: '39'  },
+  { label: 'Arcanist',   min: '40',  max: '49'  },
+  { label: 'Ritualist',  min: '50',  max: '59'  },
+  { label: 'Emissary',   min: '60',  max: '69'  },
+  { label: 'Archon',     min: '70',  max: '79'  },
+  { label: 'Oracle',     min: '80',  max: '89'  },
+  { label: 'Phantom',    min: '90',  max: '99'  },
+  { label: 'Ascendant',  min: '100', max: '109' },
+  { label: 'Eternus',    min: '110', max: '116' },
 ];
 
 export function heroImgUrl(heroId) {
