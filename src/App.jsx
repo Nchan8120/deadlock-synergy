@@ -37,7 +37,7 @@ export default function App() {
   const synergy = useSynergy();
 
   function handleAnalyze() {
-    synergy.analyze(allHeroIds, rank.min, rank.max);
+    synergy.analyze(allHeroIds, players.length, rank.min, rank.max);
   }
 
   function handleClear() {

@@ -21,7 +21,7 @@ function normalizeCombos(raw) {
 export function useSynergy() {
   const [state, setState] = useState({ status: 'idle', heroStats: [], combos: [], error: null });
 
-  const analyze = useCallback(async (allHeroIds, rankMin, rankMax) => {
+  const analyze = useCallback(async (allHeroIds, playerCount, rankMin, rankMax) => {
     if (allHeroIds.length < 2) return;
     setState({ status: 'loading', heroStats: [], combos: [], error: null });
 
@@ -29,23 +29,21 @@ export function useSynergy() {
     const poolSet = new Set(allHeroIds);
 
     try {
-      const [statsResult, duosResult, triosResult] = await Promise.allSettled([
+      const [statsResult, combosResult] = await Promise.allSettled([
         fetchHeroStats(allHeroIds, rankParams),
-        fetchCombStats(2, rankParams),
-        fetchCombStats(3, rankParams),
+        fetchCombStats(playerCount, rankParams),
       ]);
 
       const heroStats = statsResult.status === 'fulfilled' ? normalizeHeroStats(statsResult.value) : [];
-      const duos = duosResult.status === 'fulfilled' ? normalizeCombos(duosResult.value) : [];
-      const trios = triosResult.status === 'fulfilled' ? normalizeCombos(triosResult.value) : [];
+      const combos = combosResult.status === 'fulfilled' ? normalizeCombos(combosResult.value) : [];
 
-      // Keep only combos where every hero exists in the party pool
-      const combos = [...duos, ...trios]
+      
+      const filteredCombos = combos
         .filter(c => c.heroes.every(id => poolSet.has(id)))
         .map(c => ({ ...c, heroDetails: c.heroes.map(id => HERO_BY_ID[id]).filter(Boolean) }));
 
-      setState({ status: 'success', heroStats, combos, error: null });
-    } catch (err) {
+      setState({ status: 'success', heroStats, combos: filteredCombos, error: null });
+      } catch (err) {
       setState({ status: 'error', heroStats: [], combos: [], error: err.message });
     }
   }, []);
