@@ -39,9 +39,14 @@ export function ComboCard({ combo, rank }) {
             borderRadius: 999, padding: '3px 8px 3px 4px',
           }}>
             <HeroAvatar hero={hero} size={24} />
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>
-              {hero.name}
-            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
+              <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>
+                {hero.name}
+              </span>
+              <span style={{ fontSize: 10, color: 'var(--text-3)', whiteSpace: 'nowrap' }}>
+                {hero.playerName}
+              </span>
+            </div>
           </div>
         ))}
       </div>

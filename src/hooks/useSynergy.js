@@ -21,12 +21,13 @@ function normalizeCombos(raw) {
 export function useSynergy() {
   const [state, setState] = useState({ status: 'idle', heroStats: [], combos: [], error: null });
 
-  const analyze = useCallback(async (allHeroIds, playerCount, rankMin, rankMax) => {
+  const analyze = useCallback(async (allHeroIds, players, rankMin, rankMax) => {
     if (allHeroIds.length < 2) return;
     setState({ status: 'loading', heroStats: [], combos: [], error: null });
 
     const rankParams = rankMin !== '' ? { minBadge: rankMin, maxBadge: rankMax } : {};
     const poolSet = new Set(allHeroIds);
+    const playerCount = players.length;
 
     try {
       const [statsResult, combosResult] = await Promise.allSettled([
@@ -36,12 +37,65 @@ export function useSynergy() {
 
       const heroStats = statsResult.status === 'fulfilled' ? normalizeHeroStats(statsResult.value) : [];
       const combos = combosResult.status === 'fulfilled' ? normalizeCombos(combosResult.value) : [];
+      const heroToPlayers = {};
+      players.forEach(p => {
+        p.heroes.forEach(hid => {
+          if (!heroToPlayers[hid]) heroToPlayers[hid] = [];
+          heroToPlayers[hid].push(p.id);
+        });
+      });
+      // A combo is valid if we can assign each hero to a distinct player
+      // (i.e. no two heroes need to come from the same single player)
+      function canAssignToDistinctPlayers(heroIds) {
+        // Try to find a valid 1-to-1 assignment via backtracking
+        const used = new Set();
+        function assign(i) {
+          if (i === heroIds.length) return true;
+          for (const pid of (heroToPlayers[heroIds[i]] || [])) {
+            if (!used.has(pid)) {
+              used.add(pid);
+              if (assign(i + 1)) return true;
+              used.delete(pid);
+            }
+          }
+          return false;
+        }
+        return assign(0);
+      }
 
-      
+      function getPlayerAssignment(heroIds) {
+        const used = new Set();
+        const assignment = {}; // heroId -> playerId
+        function assign(i) {
+          if (i === heroIds.length) return true;
+          for (const pid of (heroToPlayers[heroIds[i]] || [])) {
+            if (!used.has(pid)) {
+              used.add(pid);
+              assignment[heroIds[i]] = pid;
+              if (assign(i + 1)) return true;
+              used.delete(pid);
+              delete assignment[heroIds[i]];
+            }
+          }
+          return false;
+        }
+        assign(0);
+        return assignment;
+      }
+
       const filteredCombos = combos
         .filter(c => c.heroes.every(id => poolSet.has(id)))
-        .map(c => ({ ...c, heroDetails: c.heroes.map(id => HERO_BY_ID[id]).filter(Boolean) }));
-
+        .filter(c => canAssignToDistinctPlayers(c.heroes))
+        .map(c => {
+          const assignment = getPlayerAssignment(c.heroes);
+          return {
+            ...c,
+            heroDetails: c.heroes.map(id => ({
+              ...(HERO_BY_ID[id] || {}),
+              playerName: players.find(p => p.id === assignment[id])?.name ?? '',
+            })),
+          };
+        });
       setState({ status: 'success', heroStats, combos: filteredCombos, error: null });
       } catch (err) {
       setState({ status: 'error', heroStats: [], combos: [], error: err.message });

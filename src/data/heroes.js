@@ -53,5 +53,5 @@ export const RANKS = [
 ];
 
 export function heroImgUrl(heroId) {
-  return `https://assets.deadlock-api.com/v2/heroes/${heroId}/images/icon_hero_card`;
+  return `https://assets.deadlock-api.com/v2/heroes/${heroId}/images/icon_hero_card.png`;
 }
