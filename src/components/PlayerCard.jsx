@@ -93,10 +93,7 @@ export function PlayerCard({ player, index, onAddHero, onRemoveHero, onRemove, o
         <button
           onClick={() => onRemove(player.id)}
           title="Remove player"
-          style={{ color: 'var(--text-3)', fontSize: 16, lineHeight: 1, padding: '0 2px',
-            transition: 'color 0.15s' }}
-          onMouseEnter={e => e.target.style.color = 'var(--red)'}
-          onMouseLeave={e => e.target.style.color = 'var(--text-3)'}
+          style={{ color: 'var(--text-3)', fontSize: 16, lineHeight: 1, padding: '0 2px' }}
         >×</button>
       </div>
 
