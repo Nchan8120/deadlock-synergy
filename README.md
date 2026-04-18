@@ -25,13 +25,6 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-### Build for Production
-
-```bash
-npm run build
-npm run preview
-```
-
 The `dist/` folder can be deployed to Vercel, Netlify, GitHub Pages, etc.
 
 ## How to Use
