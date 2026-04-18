@@ -126,28 +126,19 @@ export function ResultsPanel({ status, heroStats, combos, error }) {
         <div style={{ display: 'flex', gap: 0 }}>
           <Tab label="Best Win Rate" active={tab === 'winrate'} onClick={() => setTab('winrate')} />
           <Tab label="Most Played" active={tab === 'played'} onClick={() => setTab('played')} />
-          <Tab label="Hero Stats" active={tab === 'heroes'} onClick={() => setTab('heroes')} />
         </div>
       </div>
 
       {/* Content */}
       <div>
-        {showHeroes ? (
-          heroStatsSorted.length === 0 ? (
-            <EmptyState message="No hero stats returned for this pool and rank filter." />
-          ) : heroStatsSorted.map(stat => (
-            <HeroStatRow key={stat.id} stat={stat} />
-          ))
+        {comboList.length === 0 ? (
+          <EmptyState message="No combo data found. Try adding more heroes or removing the rank filter." />
         ) : (
-          comboList.length === 0 ? (
-            <EmptyState message={`No combo data found. Try adding more heroes or removing the rank filter.`} />
-          ) : (
-            <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {comboList.slice(0, 20).map((combo, i) => (
-                <ComboCard key={i} combo={combo} />
-              ))}
-            </div>
-          )
+          <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {comboList.slice(0, 20).map((combo, i) => (
+              <ComboCard key={i} combo={combo} />
+            ))}
+          </div>
         )}
       </div>
     </div>
