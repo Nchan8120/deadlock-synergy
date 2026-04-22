@@ -7,7 +7,6 @@ Find the best hero combos and win rates for your Deadlock party, powered by [dea
 - **Up to 6 players** — add each player's hero pool (heroes they actually play)
 - **Combo win rates** — see which duo/trio/stack combos from your pool have the highest win rates
 - **Most played combos** — sorted by total games played together
-- **Hero stats tab** — individual win rates for every hero in the pool
 - **Rank filter** — filter all data by rank bracket (Obscurus → Eternus)
 - **Renameable players** — click any player name to rename them to a gamertag
 
