@@ -88,9 +88,14 @@ export function useSynergy() {
         .filter(c => canAssignToDistinctPlayers(c.heroes))
         .map(c => {
           const assignment = getPlayerAssignment(c.heroes);
+          const sortedHeroes = [...c.heroes].sort((a, b) => {
+            const playerA = players.findIndex(p => p.id === assignment[a]);
+            const playerB = players.findIndex(p => p.id === assignment[b]);
+            return playerA - playerB;
+          });
           return {
             ...c,
-            heroDetails: c.heroes.map(id => ({
+            heroDetails: sortedHeroes.map(id => ({
               ...(HERO_BY_ID[id] || {}),
               playerName: players.find(p => p.id === assignment[id])?.name ?? '',
             })),
