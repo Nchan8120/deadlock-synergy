@@ -28,7 +28,7 @@ export function HeroAvatar({ hero, size = 28 }) {
     >
       {!imgError ? (
         <img
-          src={heroImgUrl(hero.id)}
+          src={hero.img}
           alt={hero.name}
           width={size}
           height={size}
